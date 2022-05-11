@@ -7,54 +7,19 @@ import * as SessionApiUtil from './util/session_api_util';
 
 document.addEventListener("DOMContentLoaded", () => {
     const root = document.getElementById("root");
-    const store = configureStore();
+    let preloadedState = undefined;
+    if (window.currentUser) {
+        preloadedState = {
+            entities: {
+                users: {[window.currentUser.id]: window.currentUser}
+            },
+            session: {
+                id: window.currentUser.id
+            }
+        }
+    }
+    const store = configureStore(preloadedState);
     window.store = store;
     window.login = login;
     ReactDOM.render(<Root store={store} />, root);
-    // SessionApiUtil.signup(
-    //     {
-    //         username: "Jeremy123",
-    //         password: "123456"
-    //     }
-    // ).then(console.log);
-    
-    // SessionApiUtil.login(
-    //     {
-    //         username: "Jeremy123",
-    //         password: "123456"
-    //     }
-    // ).then(console.log);
-
-    // $.ajax({
-    //     url: 'api/users',
-    //     method: 'POST',
-    //     data: {
-    //         user: {
-    //             username: "Jeremy",
-    //             password: "123456"
-    //         }
-    //     }
-    // }).then(console.log);
-    // $.ajax({
-    //     url: 'api/session',
-    //     method: 'POST',
-    //     data: {
-    //         user: {
-    //             username: "Jeremy",
-    //             password: "123456"
-    //         }
-    //     }
-    // }).then(
-    //     $.ajax({
-    //         url: 'api/session',
-    //         method: 'DELETE',
-    //     }).then(console.log)
-    // ).then(console.log);
-
-    // setTimeout(()=>{
-    //     $.ajax({
-    //         url: 'api/session',
-    //         method: 'DELETE',
-    //     }).then(console.log);
-    // }, 5000);
 })
